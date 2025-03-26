@@ -1,0 +1,5 @@
+FROM postgres:latest
+ENV POSTGRES_USER admin
+ENV POSTGRES_PASSWORD admin123
+ENV POSTGRES_DB my_database
+
