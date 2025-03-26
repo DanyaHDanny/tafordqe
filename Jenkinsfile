@@ -1,4 +1,4 @@
- pipeline {
+pipeline {
     agent any
 
     environment {
@@ -13,21 +13,26 @@
         stage('Clone Repository') {
             steps {
                 // Clone the repository containing Podman setup and SQL files
-                git 'https://github.com/DanyaHDanny/tafordqe'
+                git branch: 'main', url: 'https://github.com/DanyaHDanny/tafordqe'
             }
         }
 
         stage('Build Podman Container') {
             steps {
                 // Start PostgreSQL container
-                sh 'podman-compose up -d'
+                sh '''
+                podman-compose up -d
+                '''
             }
         }
 
         stage('Feed Data into PostgreSQL') {
             steps {
                 // Run the script to feed data
-                sh './feed_data.sh'
+                sh '''
+                chmod +x feed_data.sh
+                ./feed_data.sh
+                '''
             }
         }
     }
@@ -35,7 +40,9 @@
     post {
         always {
             // Stop and remove Podman containers
-            sh 'podman-compose down'
+            sh '''
+            podman-compose down
+            '''
         }
     }
 }

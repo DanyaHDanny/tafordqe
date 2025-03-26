@@ -7,5 +7,5 @@ Configure Jenkins to Use the Pipeline from Git:
 3) Configure the SCM settings to point to your Git repository:
 * SCM: Git
 * Repository URL: https://github.com/DanyaHDanny/tafordqe
-* Branch: main (or the branch where your Jenkinsfile is stored)
+* Branch: */main (or the branch where your Jenkinsfile is stored)
 * Script Path: Jenkinsfile (or the name of the file you saved)
