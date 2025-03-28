@@ -1,48 +1,31 @@
 pipeline {
     agent any
-
-    environment {
-        DB_HOST = 'localhost'
-        DB_PORT = '5434'  // Updated port
-        DB_USER = 'admin'
-        DB_PASSWORD = 'admin123'
-        DB_NAME = 'postgres'
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
-                // Clone the repository containing Podman setup and SQL files
                 git branch: 'main', url: 'https://github.com/DanyaHDanny/tafordqe'
             }
         }
-
-        stage('Build Podman Container') {
+        stage('Create PostgreSQL Container') {
             steps {
-                // Start PostgreSQL container
-                sh '''
-                podman-compose up -d
-                '''
+                script {
+                    // Run Podman Compose on the Windows host to create the PostgreSQL container
+                    bat '''
+                    podman-compose -f podman-compose.yml up -d
+                    '''
+                }
             }
         }
-
-        stage('Feed Data into PostgreSQL') {
+        stage('Run SQL Script') {
             steps {
-                // Run the script to feed data
-                sh '''
-                chmod +x feed_data.sh
-                ./feed_data.sh
-                '''
+                script {
+                    // Wait for PostgreSQL container to be ready and execute the SQL script
+                    bat '''
+                    timeout /t 10
+                    podman exec -i postgres_container psql -U admin -d my_database < data.sql
+                    '''
+                }
             }
-        }
-    }
-
-    post {
-        always {
-            // Stop and remove Podman containers
-            sh '''
-            podman-compose down
-            '''
         }
     }
 }
