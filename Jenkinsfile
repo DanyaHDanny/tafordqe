@@ -23,7 +23,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install psycopg2 for PostgreSQL
-                sh 'pip3 install psycopg2'
+                sh 'pip install psycopg2'
             }
         }
         stage('Generate Data') {
