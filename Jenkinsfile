@@ -37,7 +37,7 @@ pipeline {
             steps {
                 script {
                     // Activate the virtual environment and run the Python script
-                    sh '. venv/bin/activate && python generate_data.py'
+                    sh '. venv/bin/activate && python main.py'
                 }
             }
         }
