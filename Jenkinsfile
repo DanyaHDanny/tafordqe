@@ -22,17 +22,20 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                // Install psycopg2 for PostgreSQL
-                sh 'pip install psycopg2'
+                script {
+                    // Create a virtual environment
+                    sh 'python3 -m venv venv'
+
+                    // Activate the virtual environment and install psycopg2
+                    sh '. venv/bin/activate && pip install psycopg2'
+                }
             }
         }
         stage('Generate Data') {
             steps {
                 script {
-                    // Run the Python script to generate data
-                    sh """
-                    python3 generate_data.py
-                    """
+                    // Activate the virtual environment and run the Python script
+                    sh '. venv/bin/activate && python3 generate_data.py'
                 }
             }
         }
