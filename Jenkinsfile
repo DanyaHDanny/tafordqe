@@ -17,16 +17,19 @@ pipeline {
         stage('Install Python') {
             steps {
                 // Install Python and pip
-                sh 'apt-get update && apt-get install -y python3 python3-pip'
+                sh 'apt-get update'
+                sh 'apt-get install -y python3 python3-pip'
+                sh 'apt-get install python3.11-venv'
+                sh 'ln -s /usr/bin/python3 /usr/bin/python'
+
             }
         }
         stage('Install Dependencies') {
             steps {
                 script {
                     // Create a virtual environment
-                    sh 'python3 -m venv venv'
-
-                    // Activate the virtual environment and install psycopg2
+                    sh 'apt-get install -y libpq-dev'
+                    sh 'python -m venv venv'
                     sh '. venv/bin/activate && pip install psycopg2'
                 }
             }
@@ -35,9 +38,11 @@ pipeline {
             steps {
                 script {
                     // Activate the virtual environment and run the Python script
-                    sh '. venv/bin/activate && python3 generate_data.py'
+                    sh '. venv/bin/activate && python generate_data.py'
                 }
             }
         }
     }
 }
+
+
