@@ -11,21 +11,27 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // Clone the GitHub repository
-                git branch: 'main', url: 'https://github.com/DanyaHDanny/tafordqe'
+                git branch: 'main', url: 'https://github.com/your-username/your-repo.git'
             }
         }
-        stage('Install PostgreSQL Client') {
+        stage('Install Python') {
             steps {
-                // Install PostgreSQL client
-                sh 'apt-get update && apt-get install -y postgresql-client'
+                // Install Python and pip
+                sh 'apt-get update && apt-get install -y python3 python3-pip'
             }
         }
-        stage('Execute SQL Commands') {
+        stage('Install Dependencies') {
+            steps {
+                // Install psycopg2 for PostgreSQL
+                sh 'pip3 install psycopg2'
+            }
+        }
+        stage('Generate Data') {
             steps {
                 script {
-                    // Execute the SQL commands in data.sql
+                    // Run the Python script to generate data
                     sh """
-                    PGPASSWORD=${DB_PASSWORD} psql -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} -d ${DB_NAME} -f data.sql
+                    python3 generate_data.py
                     """
                 }
             }
