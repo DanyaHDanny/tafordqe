@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    networks:
+      - tafordqenetwork
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    user: "0"  # Run as root user
+    networks:
+      - tafordqenetwork
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+  hdfs_namenode:
+    image: bde2020/hadoop-namenode
+    container_name: hdfs_namenode
+    networks:
+      - tafordqenetwork
+    environment:
+      CLUSTER_NAME: my_hdfs_cluster
+      CORE_CONF_fs_defaultFS: hdfs://hdfs_namenode:8020
+      HDFS_CONF_dfs_namenode_rpc-address: hdfs_namenode:8020
+      HDFS_CONF_dfs_namenode_http-address: hdfs_namenode:50070
+      HDFS_CONF_dfs_replication: 1
+    ports:
+      - "50070:50070"
+      - "8020:8020"
+    volumes:
+      - hdfs_namenode_data:/hadoop/dfs/name
+
+  hdfs_datanode:
+    image: bde2020/hadoop-datanode
+    container_name: hdfs_datanode
+    networks:
+      - tafordqenetwork
+    environment:
+      CORE_CONF_fs_defaultFS: hdfs://hdfs_namenode:8020
+      HDFS_CONF_dfs_replication: 1
+    volumes:
+      - hdfs_datanode_data:/hadoop/dfs/data
+
+networks:
+  tafordqenetwork:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  jenkins_home:
+  hdfs_namenode_data:
+  hdfs_datanode_data:
