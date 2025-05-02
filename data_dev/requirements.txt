@@ -1,6 +1,4 @@
-pandas
-psycopg2
-dotenv
-faker
-pymysql
-cryptography
+faker~=37.1.0
+psycopg2~=2.9.10
+pandas~=2.2.3
+pyarrow~=19.0.1
