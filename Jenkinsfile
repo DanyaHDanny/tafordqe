@@ -28,18 +28,35 @@ pipeline {
                 script {
                     // Create a virtual environment
                     sh 'apt-get install -y libpq-dev'
-                    sh 'python3 -m venv venv'
-                    sh '. venv/bin/activate && pip install -r tafordqe/data_dev/requirements.txt'
+                    sh '''
+                        python3 -m venv venv
+                        source venv/bin/activate
+                        pip install -r tafordqe/data_dev/requirements.txt
+                    '''
                 }
             }
         }
-        stage('Generate Data') {
+        stage('Run main') {
             steps {
                 script {
                     // Activate the virtual environment and run the Python script
-                    sh '. venv/bin/activate && python3 tafordqe/data_dev/main.py'
+                    sh '''
+                        source venv/bin/activate
+                        python tafordqe/data_dev/main.py
+                    '''
                 }
             }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs for details.'
         }
     }
 }
