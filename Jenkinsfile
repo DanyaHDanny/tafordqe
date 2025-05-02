@@ -19,8 +19,10 @@ pipeline {
         }
         stage('Clone Repository') {
             steps {
-                // Clone the GitHub repository
-                git branch: 'main', url: 'https://github.com/DanyaHDanny/tafordqe'
+                script {
+                    // Clone the Git repository
+                    git branch: 'main', url: 'https://github.com/DanyaHDanny/tafordqe'
+                }
             }
         }
         stage('Install Dependencies') {
