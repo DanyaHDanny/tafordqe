@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     // Update the package list
-                    sh 'sudo apt-get update'
+                    sh 'apt-get update'
                 }
             }
         }

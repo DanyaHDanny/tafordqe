@@ -35,7 +35,7 @@ jenkins_home\secrets\initialAdminPassword
 
 From logs: 
 ```
-podman logs jenkins | findstr "Please use the following password"
+podman logs jenkins | grep "Please use the following password"
 ```
 
 ### First initialization
