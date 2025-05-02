@@ -1,6 +1,8 @@
 from data_dev.queries import TRANSFORM_SQL
 from data_dev.config import parquet_storage_config
 
+import os
+
 
 class LoadParquet:
     """
@@ -45,6 +47,7 @@ class LoadParquet:
             Exception: If there is an issue with reading data or saving the Parquet file.
         """
         df = self.read_data()
+        os.makedirs(self.storage_path, exist_ok=True)
         df.to_parquet(
             self.storage_path,
             engine='pyarrow',

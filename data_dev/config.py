@@ -97,5 +97,5 @@ from dataclasses import dataclass
 
 # Instance of ParquetStorageConfig
 parquet_storage_config = ParquetStorageConfig(
-    storage_path='tmp'
+    storage_path='parquet_data'
 )
