@@ -14,7 +14,6 @@ pipeline {
                 // Install Python and pip
                 sh 'apt-get install -y python3 python3-pip'
                 sh 'apt-get install -y python3.11-venv'
-                //sh 'ln -s /usr/bin/python3 /usr/bin/python'
             }
         }
         stage('Clone Repository') {

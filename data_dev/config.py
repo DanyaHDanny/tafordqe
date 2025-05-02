@@ -79,7 +79,7 @@ postgres_config = PostgresConfig(
     user='myuser',
     password='mypassword',
     db='mydatabase',
-    port=5434,
+    port=5432,  # 5434 localhost
     host='postgres'  # localhost
 )
 
