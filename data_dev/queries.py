@@ -3,32 +3,32 @@
 
 CREATE_SRC_GENERATED_FACILITIES_TABLE_QUERY = """
 CREATE TABLE IF NOT EXISTS src_generated_facilities (
-    facility_id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
-    facility_name VARCHAR(100) NOT NULL, -- Name of the facility
-    facility_type VARCHAR(50) NOT NULL, -- Type of the facility (e.g., Hospital, Clinic)
-    address TEXT NOT NULL, -- Address of the facility
-    city VARCHAR(50) NOT NULL, -- City where the facility is located
-    state VARCHAR(50) NOT NULL -- State where the facility is located
+    facility_id INT NOT NULL, 
+    facility_name VARCHAR(100) NOT NULL,
+    facility_type VARCHAR(50) NOT NULL, 
+    address TEXT NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL
 );
 """
 
 CREATE_SRC_GENERATED_PATIENTS_TABLE_QUERY = """
 CREATE TABLE IF NOT EXISTS src_generated_patients (
-    patient_id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
-    first_name VARCHAR(50) NOT NULL, -- First name of the patient
-    last_name VARCHAR(50) NOT NULL, -- Last name of the patient
-    date_of_birth DATE NOT NULL, -- Date of birth of the patient
-    address TEXT NOT NULL -- Address of the patient
+    patient_id INT NOT NULL, 
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL, 
+    date_of_birth DATE NOT NULL,
+    address TEXT NOT NULL
 );
 """
 
 CREATE_SRC_GENERATED_VISITS_TABLE_QUERY = """
 CREATE TABLE IF NOT EXISTS src_generated_visits (
-    patient_id INT NOT NULL, -- Foreign key referencing the patients table
-    facility_id INT NOT NULL, -- Foreign key referencing the facilities table
-    date DATE NOT NULL, -- Date of the visit
-    treatment_cost NUMERIC(10, 2) NOT NULL, -- Cost of the treatment
-    duration_minutes INT NOT NULL -- Duration of the visit in minutes
+    patient_id INT NOT NULL, 
+    facility_id INT NOT NULL, 
+    visit_timestamp TIMESTAMP NOT NULL, 
+    treatment_cost NUMERIC(10, 2) NOT NULL, 
+    duration_minutes INT NOT NULL
 );
 """
 
@@ -43,37 +43,17 @@ VALUES (%(patient_id)s, %(first_name)s, %(last_name)s, %(date_of_birth)s, %(addr
 """
 
 INSERT_SRC_GENERATED_VISITS_QUERY = """
-INSERT INTO src_generated_visits (patient_id, facility_id, date, treatment_cost, duration_minutes)
-VALUES (%(patient_id)s, %(facility_id)s, %(date)s, %(treatment_cost)s, %(duration_minutes)s)
+INSERT INTO src_generated_visits (patient_id, facility_id, visit_timestamp, treatment_cost, duration_minutes)
+VALUES (%(patient_id)s, %(facility_id)s, %(visit_timestamp)s, %(treatment_cost)s, %(duration_minutes)s)
 """
 
 # 3NF LAYER
 
 
-INSERT_FACILITIES_QUERY = """
-INSERT INTO facilities (facility_name, facility_type, address, city, state)
-VALUES (%(last_run)s, %(last_run)s, %(last_run)s, %(last_run)s, %(last_run)s)
-ON DUPLICATE KEY UPDATE
-   facility_name = VALUES(facility_name),
-   facility_type = VALUES(facility_type),
-   address = VALUES(address),
-   city = VALUES(city),
-   state = VALUES(state);
-"""
-
-CREATE_GENERATED_PATIENTS_TABLE_QUERY123 = """
-CREATE TABLE IF NOT EXISTS generated_patients (
-    patient_id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
-    first_name VARCHAR(50) NOT NULL, -- First name of the patient
-    last_name VARCHAR(50) NOT NULL, -- Last name of the patient
-    date_of_birth DATE NOT NULL, -- Date of birth of the patient
-    address TEXT NOT NULL -- Address of the patient
-);
-"""
-
-CREATE_GENERATED_FACILITIES_TABLE_QUERY123 = """
-CREATE TABLE IF NOT EXISTS generated_facilities (
-    facility_id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
+CREATE_FACILITIES_TABLE_QUERY = """
+CREATE TABLE IF NOT EXISTS facilities (
+    id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
+    external_id INT NOT NULL, -- External id
     facility_name VARCHAR(100) NOT NULL, -- Name of the facility
     facility_type VARCHAR(50) NOT NULL, -- Type of the facility (e.g., Hospital, Clinic)
     address TEXT NOT NULL, -- Address of the facility
@@ -82,16 +62,92 @@ CREATE TABLE IF NOT EXISTS generated_facilities (
 );
 """
 
-CREATE_GENERATED_VISITS_TABLE_QUERY123 = """
-CREATE TABLE IF NOT EXISTS generated_visits (
-    visit_id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
+CREATE_PATIENTS_TABLE_QUERY = """
+CREATE TABLE IF NOT EXISTS patients (
+    id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
+    external_id INT NOT NULL, -- External id
+    first_name VARCHAR(50) NOT NULL, -- First name of the patient
+    last_name VARCHAR(50) NOT NULL, -- Last name of the patient
+    date_of_birth DATE NOT NULL, -- Date of birth of the patient
+    address TEXT NOT NULL -- Address of the patient
+);
+"""
+
+CREATE_VISITS_TABLE_QUERY = """
+CREATE TABLE IF NOT EXISTS visits (
+    id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
     patient_id INT NOT NULL, -- Foreign key referencing the patients table
     facility_id INT NOT NULL, -- Foreign key referencing the facilities table
-    time_id DATE NOT NULL, -- Date of the visit
-    visit_reason VARCHAR(50) NOT NULL, -- Reason for the visit
+    visit_timestamp TIMESTAMP NOT NULL, -- Timestamp of the visit
     treatment_cost NUMERIC(10, 2) NOT NULL, -- Cost of the treatment
     duration_minutes INT NOT NULL, -- Duration of the visit in minutes
-    FOREIGN KEY (patient_id) REFERENCES patients(patient_id) ON DELETE CASCADE,
-    FOREIGN KEY (facility_id) REFERENCES facilities(facility_id) ON DELETE CASCADE
+    FOREIGN KEY (patient_id) REFERENCES patients(id) ON DELETE CASCADE,
+    FOREIGN KEY (facility_id) REFERENCES facilities(id) ON DELETE CASCADE
 );
+"""
+
+MERGE_FACILITIES_QUERY = """
+MERGE INTO facilities AS target
+USING public.src_generated_facilities AS source
+ON target.external_id = source.facility_id
+WHEN MATCHED THEN 
+    DO NOTHING
+WHEN NOT MATCHED THEN
+    INSERT (external_id, facility_name, facility_type, address, city, state)
+    VALUES (source.facility_id, source.facility_name, source.facility_type, source.address, source.city, source.state);
+"""
+
+MERGE_PATIENTS_QUERY = """
+MERGE INTO patients AS target
+USING public.src_generated_patients AS source
+ON target.external_id = source.patient_id
+WHEN MATCHED THEN 
+    DO NOTHING
+WHEN NOT MATCHED THEN
+    INSERT (external_id, first_name, last_name, date_of_birth, address)
+    VALUES (source.patient_id, source.first_name, source.last_name, source.date_of_birth, source.address);
+"""
+
+MERGE_VISITS_QUERY = """
+WITH src_visits AS (
+    SELECT 
+        f.id AS facility_id,
+        p.id AS patient_id,
+        sgv.visit_timestamp,
+        sgv.treatment_cost,
+        sgv.duration_minutes 
+    FROM src_generated_visits sgv 
+    JOIN facilities f 
+        ON sgv.facility_id = f.external_id 
+    JOIN patients p
+        ON sgv.patient_id = p.external_id 
+    WHERE visit_timestamp::date <= %(date_scope)s
+)
+MERGE INTO visits AS target
+USING src_visits AS source
+ON target.facility_id = source.facility_id
+   AND target.patient_id = source.patient_id
+   AND target.visit_timestamp = source.visit_timestamp
+WHEN MATCHED THEN
+    DO NOTHING
+WHEN NOT MATCHED THEN
+    INSERT (facility_id, patient_id, visit_timestamp, treatment_cost, duration_minutes)
+    VALUES (source.facility_id, source.patient_id, source.visit_timestamp, source.treatment_cost, source.duration_minutes);
+"""
+
+# PARQUET PREPARATION
+
+TRANSFORM_SQL = """
+select 
+	f.facility_type,
+	concat(p.first_name, ' ',p.last_name) patient_full_name,
+	visit_timestamp::date visit_date,
+	sum(treatment_cost), 
+	avg(duration_minutes)
+from visits v
+join facilities f 
+on f.id = v.facility_id
+join patients p
+on p.id = v.patient_id
+group by 1, 2, 3
 """

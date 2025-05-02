@@ -50,6 +50,7 @@ services:
     networks:
       - tafordqenetwork
     environment:
+      CLUSTER_NAME: my_hdfs_cluster
       CORE_CONF_fs_defaultFS: hdfs://hdfs_namenode:8020
       HDFS_CONF_dfs_replication: 1
     volumes:

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Tuple
+from datetime import datetime
 
 
 @dataclass
@@ -43,19 +44,35 @@ class GeneratorConfig:
 
 
 @dataclass
-class HDFSConfig:
+class ParquetStorageConfig:
     """
-    A dataclass to store HDFS (Hadoop Distributed File System) configuration settings.
+    Configuration class for Parquet storage.
+
+    This class is used to define the configuration for storing data in Parquet format.
 
     Attributes:
-        host (str): The base URL or hostname of the HDFS NameNode (e.g., "http://localhost:50070").
-        user (str): The username to authenticate with HDFS.
-        base_path (str): The base directory path in HDFS where data will be stored.
+        storage_path (str): The file system path where Parquet files will be stored.
     """
-    host: str
-    user: str
-    base_path: str
+    storage_path: str
 
+
+@dataclass
+class LoadConfig:
+    """
+    LoadConfig is a configuration class used to store config related to data loading processes.
+
+    Attributes:
+        last_date (str): The last date for which data should be successfully loaded.
+                         This is typically used to track the progress of incremental data loads.
+                         The date should be in the format 'YYYY-MM-DD'.
+    """
+    date_scope: str
+
+
+# Instance of LoadConfig
+load_config = LoadConfig(
+    date_scope=datetime.now().date().strftime('%Y-%m-%d')  # Example: '2025-01-01'
+)
 
 # Instance of PostgresConfig
 postgres_config = PostgresConfig(
@@ -63,22 +80,22 @@ postgres_config = PostgresConfig(
     password='mypassword',
     db='mydatabase',
     port=5434,
-    host='localhost'
+    host='postgres'  # localhost
 )
 
 # Instance of GeneratorConfig
 generator_config = GeneratorConfig(
     num_patients=30,
     start_date='2025-04-01',
-    end_date='2025-04-02',
+    end_date='2025-05-01',
     date_format='%Y-%m-%d',
-    facility_types=["Hospital", "Clinic", "Urgent Care", "Specialty Center"],
+    facility_types=['Hospital', 'Clinic', 'Urgent Care', 'Specialty Center'],
     visits_per_day=(7, 10)
 )
 
-# Instance of HDFSConfig
-hdfs_config = HDFSConfig(
-    host="http://localhost:50070",
-    user="hdfs_user",
-    base_path="/data"
+from dataclasses import dataclass
+
+# Instance of ParquetStorageConfig
+parquet_storage_config = ParquetStorageConfig(
+    storage_path='tmp'
 )

@@ -106,10 +106,21 @@ class DataGenerator:
         for date in date_list:
             num_visits_per_day = random.randint(self.visits_per_day[0], self.visits_per_day[1])
             for _ in range(num_visits_per_day):
+                random_hour = random.randint(0, 23)
+                random_minute = random.randint(0, 59)
+                random_second = random.randint(0, 59)
+                visit_timestamp = datetime(
+                    year=date.year,
+                    month=date.month,
+                    day=date.day,
+                    hour=random_hour,
+                    minute=random_minute,
+                    second=random_second
+                )
                 visits.append({
                     "patient_id": random.randint(1, self.num_patients),
                     "facility_id": random.randint(1, len(self.facility_types)),
-                    "date": date.strftime(self.date_format),
+                    "visit_timestamp": visit_timestamp.strftime("%Y-%m-%d %H:%M:%S"),
                     "treatment_cost": round(random.uniform(50, 5000), 2),
                     "duration_minutes": random.randint(15, 60)
                 })
