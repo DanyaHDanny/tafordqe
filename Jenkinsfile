@@ -30,7 +30,7 @@ pipeline {
                     sh 'apt-get install -y libpq-dev'
                     sh '''
                         python3 -m venv venv
-                        source venv/bin/activate
+                        . venv/bin/activate
                         pip install -r tafordqe/data_dev/requirements.txt
                     '''
                 }
@@ -41,7 +41,7 @@ pipeline {
                 script {
                     // Activate the virtual environment and run the Python script
                     sh '''
-                        source venv/bin/activate
+                        . venv/bin/activate
                         python tafordqe/data_dev/main.py
                     '''
                 }
