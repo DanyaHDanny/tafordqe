@@ -47,6 +47,7 @@ class LoadParquet:
             Exception: If there is an issue with reading data or saving the Parquet file.
         """
         df = self.read_data()
+        print(f"Current working directory: {os.getcwd()}")
         os.makedirs(self.storage_path, exist_ok=True)
         df.to_parquet(
             self.storage_path,
