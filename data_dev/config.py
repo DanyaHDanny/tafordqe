@@ -86,8 +86,8 @@ postgres_config = PostgresConfig(
 # Instance of GeneratorConfig
 generator_config = GeneratorConfig(
     num_patients=30,
-    start_date='2025-04-01',
-    end_date='2025-05-01',
+    start_date='2025-04-30',
+    end_date='2025-06-01',
     date_format='%Y-%m-%d',
     facility_types=['Hospital', 'Clinic', 'Urgent Care', 'Specialty Center'],
     visits_per_day=(7, 10)
