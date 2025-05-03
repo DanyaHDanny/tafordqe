@@ -1,4 +1,6 @@
 import os
+import pandas as pd
+
 from data_dev.queries import (
     TRANSFORM_PATIENT_SUM_TREATMENT_COST_PER_FACILITY_TYPE_SQL,
     TRANSFORM_FACILITY_NAME_MIN_TIME_SPENT_PER_VISIT_DATE_SQL,
@@ -103,10 +105,13 @@ class LoadParquet:
         Transforms data for facility type average time spent per visit date and writes it to a Parquet file.
         """
         df = self.read_data(TRANSFORM_FACILITY_TYPE_AVG_TIME_SPENT_PER_VISIT_DATE_SQL)
+        df['visit_date'] = pd.to_datetime(df['visit_date'])
+        df['partition_date'] = df['visit_date'].dt.to_period('M').astype(str)
+        print(df)
         self.to_parquet(
             df=df,
             storage_path=self.storage_path_facility_type_avg_time_spent_per_visit_date,
-            partition_columns=['visit_date']
+            partition_columns=['partition_date']
         )
 
     def transform_patient_sum_treatment_cost_per_facility_type(self):
@@ -125,10 +130,13 @@ class LoadParquet:
         Transforms data for facility name minimum time spent per visit date and writes it to a Parquet file.
         """
         df = self.read_data(TRANSFORM_FACILITY_NAME_MIN_TIME_SPENT_PER_VISIT_DATE_SQL)
+        df['visit_date'] = pd.to_datetime(df['visit_date'])
+        df['partition_date'] = df['visit_date'].dt.to_period('M').astype(str)
+        print(df)
         self.to_parquet(
             df=df,
             storage_path=self.storage_path_facility_name_min_time_spent_per_visit_date,
-            partition_columns=['visit_date']
+            partition_columns=['partition_date']
         )
 
     def load_parquet(self):
