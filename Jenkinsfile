@@ -6,7 +6,7 @@ pipeline {
                 script {
                     // Update the package list
                     sh 'apt-get update'
-                    sh 'apt-get install libpq-dev'
+                    sh 'apt-get install -y libpq-dev'
                 }
             }
         }
