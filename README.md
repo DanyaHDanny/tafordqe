@@ -84,6 +84,24 @@ podman exec -it jenkins /bin/bash
 
 * Check the 3 folders were created and populated with parquet files inside:
 
+Folders with files:
+
+```markdown
+parquet_data/
+├── patient_sum_treatment_cost_per_facility_type/
+│ └── ... (partitioned subdirectories with parquet files)
+├── facility_name_min_time_spent_per_visit_date/
+│ └── ... (partitioned subdirectories with parquet files)
+└── facility_type_avg_time_spent_per_visit_date/
+└── ... (partitioned subdirectories with parquet files)
 ```
-cd 
+
+You can use 'cd' and 'ls' commands to verify it:
+
+```
+ls
+cd parquet_data
+cd patient_sum_treatment_cost_per_facility_type
+...
+cd ..
 ```

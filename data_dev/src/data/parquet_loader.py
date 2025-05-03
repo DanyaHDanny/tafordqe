@@ -107,7 +107,6 @@ class LoadParquet:
         df = self.read_data(TRANSFORM_FACILITY_TYPE_AVG_TIME_SPENT_PER_VISIT_DATE_SQL)
         df['visit_date'] = pd.to_datetime(df['visit_date'])
         df['partition_date'] = df['visit_date'].dt.to_period('M').astype(str)
-        print(df)
         self.to_parquet(
             df=df,
             storage_path=self.storage_path_facility_type_avg_time_spent_per_visit_date,
@@ -132,7 +131,6 @@ class LoadParquet:
         df = self.read_data(TRANSFORM_FACILITY_NAME_MIN_TIME_SPENT_PER_VISIT_DATE_SQL)
         df['visit_date'] = pd.to_datetime(df['visit_date'])
         df['partition_date'] = df['visit_date'].dt.to_period('M').astype(str)
-        print(df)
         self.to_parquet(
             df=df,
             storage_path=self.storage_path_facility_name_min_time_spent_per_visit_date,
