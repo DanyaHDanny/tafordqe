@@ -23,7 +23,7 @@ def main():
         # load parquet files
         logging.info(f"Transformation of parquet files")
         ld = LoadParquet(connection_object)
-        ld.to_parquet()
+        ld.load_parquet()
 
 
 if __name__ == '__main__':

@@ -51,9 +51,16 @@ class ParquetStorageConfig:
     This class is used to define the configuration for storing data in Parquet format.
 
     Attributes:
-        storage_path (str): The file system path where Parquet files will be stored.
+        storage_path_facility_type_avg_time_spent_per_visit_date (str):
+        The file system path where Parquet files for facility_type_avg_time_spent_per_visit_date will be stored.
+        storage_path_patient_sum_treatment_cost_per_facility_type (str):
+        The file system path where Parquet files for patient_sum_treatment_cost_per_facility_type will be stored.
+        storage_path_facility_name_min_time_spent_per_visit_date (str):
+        The file system path where Parquet files for facility_name_min_time_spent_per_visit_date will be stored.
     """
-    storage_path: str
+    storage_path_facility_type_avg_time_spent_per_visit_date: str
+    storage_path_patient_sum_treatment_cost_per_facility_type: str
+    storage_path_facility_name_min_time_spent_per_visit_date: str
 
 
 @dataclass
@@ -79,23 +86,26 @@ postgres_config = PostgresConfig(
     user='myuser',
     password='mypassword',
     db='mydatabase',
-    port=5432,  # 5434 localhost
-    host='postgres'  # localhost
+    port=5432,  # localhost:5434,  podman_network:5432
+    host='postgres'  # localhost:localhost, podman_network:postgres
 )
 
 # Instance of GeneratorConfig
 generator_config = GeneratorConfig(
     num_patients=30,
-    start_date='2025-04-30',
-    end_date='2025-06-01',
+    start_date='2000-01-01',
+    end_date='2030-01-01',
     date_format='%Y-%m-%d',
     facility_types=['Hospital', 'Clinic', 'Urgent Care', 'Specialty Center'],
     visits_per_day=(7, 10)
 )
 
-from dataclasses import dataclass
-
 # Instance of ParquetStorageConfig
 parquet_storage_config = ParquetStorageConfig(
-    storage_path='/parquet_data'
+    storage_path_facility_type_avg_time_spent_per_visit_date='/parquet_data/'
+                                                             'facility_type_avg_time_spent_per_visit_date',
+    storage_path_patient_sum_treatment_cost_per_facility_type='/parquet_data/'
+                                                              'patient_sum_treatment_cost_per_facility_type',
+    storage_path_facility_name_min_time_spent_per_visit_date='/parquet_data/'
+                                                             'facility_name_min_time_spent_per_visit_date'
 )

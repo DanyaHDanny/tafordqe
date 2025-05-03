@@ -1,58 +1,140 @@
-from data_dev.queries import TRANSFORM_SQL
-from data_dev.config import parquet_storage_config
-
 import os
+from data_dev.queries import (
+    TRANSFORM_PATIENT_SUM_TREATMENT_COST_PER_FACILITY_TYPE_SQL,
+    TRANSFORM_FACILITY_NAME_MIN_TIME_SPENT_PER_VISIT_DATE_SQL,
+    TRANSFORM_FACILITY_TYPE_AVG_TIME_SPENT_PER_VISIT_DATE_SQL
+)
+from data_dev.config import parquet_storage_config
 
 
 class LoadParquet:
     """
-    A class to handle the process of loading data from a database, transforming it using a SQL query, 
-    and saving it as a Parquet file.
+    A class to handle the transformation and loading of data into Parquet files.
 
     Attributes:
-        connection_object: An object representing the database connection. 
-                           It must have a `get_data_sql` method to execute SQL queries.
-        storage_path: The file path where the Parquet file will be saved. 
-                      This is retrieved from the `parquet_storage_config` configuration.
+    -----------
+    connection_object : object
+        Database connection object used to execute SQL queries.
+    storage_path_facility_type_avg_time_spent_per_visit_date : str
+        Path to store the Parquet file for facility type average time spent per visit date.
+    storage_path_patient_sum_treatment_cost_per_facility_type : str
+        Path to store the Parquet file for patient sum treatment cost per facility type.
+    storage_path_facility_name_min_time_spent_per_visit_date : str
+        Path to store the Parquet file for facility name minimum time spent per visit date.
+
+    Methods:
+    --------
+    read_data(query):
+        Executes the given SQL query and returns the result as a DataFrame.
+    to_parquet(df, storage_path, partition_columns):
+        Writes the given DataFrame to a Parquet file at the specified storage path, partitioned by the given columns.
+    transform_facility_type_avg_time_spent_per_visit_date():
+        Transforms data for facility type average time spent per visit date and writes it to a Parquet file.
+    transform_patient_sum_treatment_cost_per_facility_type():
+        Transforms data for patient sum treatment cost per facility type and writes it to a Parquet file.
+    transform_facility_name_min_time_spent_per_visit_date():
+        Transforms data for facility name minimum time spent per visit date and writes it to a Parquet file.
+    load_parquet():
+        Executes all transformations and loads the results into Parquet files.
     """
 
     def __init__(self, connection_object):
         """
-        Initializes the LoadParquet class with a database connection object.
+        Initializes the LoadParquet class with a database connection object and storage paths.
 
-        Args:
-            connection_object: A database connection object that provides a `get_data_sql` method.
+        Parameters:
+        -----------
+        connection_object : object
+            Database connection object used to execute SQL queries.
         """
         self.connection_object = connection_object
-        self.storage_path = parquet_storage_config.storage_path
+        self.storage_path_facility_type_avg_time_spent_per_visit_date = (
+            parquet_storage_config.storage_path_facility_type_avg_time_spent_per_visit_date
+        )
+        self.storage_path_patient_sum_treatment_cost_per_facility_type = (
+            parquet_storage_config.storage_path_patient_sum_treatment_cost_per_facility_type
+        )
+        self.storage_path_facility_name_min_time_spent_per_visit_date = (
+            parquet_storage_config.storage_path_facility_name_min_time_spent_per_visit_date
+        )
 
-    def read_data(self):
+    def read_data(self, query):
         """
-        Reads data from the database using the SQL query defined in `TRANSFORM_SQL`.
+        Executes the given SQL query and returns the result as a DataFrame.
+
+        Parameters:
+        -----------
+        query : str
+            SQL query to execute.
 
         Returns:
-            pandas.DataFrame: A DataFrame containing the data retrieved from the database.
+        --------
+        DataFrame
+            Resulting data from the SQL query.
         """
-        df = self.connection_object.get_data_sql(TRANSFORM_SQL)
+        df = self.connection_object.get_data_sql(query=query)
         return df
 
-    def to_parquet(self):
+    @staticmethod
+    def to_parquet(df, storage_path, partition_columns):
         """
-        Reads data from the database, transforms it using the SQL query, and saves it as a Parquet file.
+        Writes the given DataFrame to a Parquet file at the specified storage path, partitioned by the given columns.
 
-        The Parquet file is saved to the path specified in `self.storage_path`. The data is partitioned 
-        by the 'visit_date' column, and any existing data matching the partition is deleted before saving.
-
-        Raises:
-            Exception: If there is an issue with reading data or saving the Parquet file.
+        Parameters:
+        -----------
+        df : DataFrame
+            Data to write to the Parquet file.
+        storage_path : str
+            Path to store the Parquet file.
+        partition_columns : list
+            Columns to partition the Parquet file by.
         """
-        df = self.read_data()
-        print(f"Current working directory: {os.getcwd()}")
-        os.makedirs(self.storage_path, exist_ok=True)
+        os.makedirs(storage_path, exist_ok=True)
         df.to_parquet(
-            self.storage_path,
+            storage_path,
             engine='pyarrow',
-            partition_cols=['visit_date'],
+            partition_cols=partition_columns,
             index=False,
             existing_data_behavior='delete_matching'
         )
+
+    def transform_facility_type_avg_time_spent_per_visit_date(self):
+        """
+        Transforms data for facility type average time spent per visit date and writes it to a Parquet file.
+        """
+        df = self.read_data(TRANSFORM_FACILITY_TYPE_AVG_TIME_SPENT_PER_VISIT_DATE_SQL)
+        self.to_parquet(
+            df=df,
+            storage_path=self.storage_path_facility_type_avg_time_spent_per_visit_date,
+            partition_columns=['visit_date']
+        )
+
+    def transform_patient_sum_treatment_cost_per_facility_type(self):
+        """
+        Transforms data for patient sum treatment cost per facility type and writes it to a Parquet file.
+        """
+        df = self.read_data(TRANSFORM_PATIENT_SUM_TREATMENT_COST_PER_FACILITY_TYPE_SQL)
+        self.to_parquet(
+            df=df,
+            storage_path=self.storage_path_patient_sum_treatment_cost_per_facility_type,
+            partition_columns=['facility_type']
+        )
+
+    def transform_facility_name_min_time_spent_per_visit_date(self):
+        """
+        Transforms data for facility name minimum time spent per visit date and writes it to a Parquet file.
+        """
+        df = self.read_data(TRANSFORM_FACILITY_NAME_MIN_TIME_SPENT_PER_VISIT_DATE_SQL)
+        self.to_parquet(
+            df=df,
+            storage_path=self.storage_path_facility_name_min_time_spent_per_visit_date,
+            partition_columns=['visit_date']
+        )
+
+    def load_parquet(self):
+        """
+        Executes all transformations and loads the results into Parquet files.
+        """
+        self.transform_facility_type_avg_time_spent_per_visit_date()
+        self.transform_patient_sum_treatment_cost_per_facility_type()
+        self.transform_facility_name_min_time_spent_per_visit_date()

@@ -137,17 +137,74 @@ WHEN NOT MATCHED THEN
 
 # PARQUET PREPARATION
 
-TRANSFORM_SQL = """
-select 
-	f.facility_type,
-	concat(p.first_name, ' ',p.last_name) patient_full_name,
-	visit_timestamp::date visit_date,
-	sum(treatment_cost), 
-	avg(duration_minutes)
-from visits v
-join facilities f 
-on f.id = v.facility_id
-join patients p
-on p.id = v.patient_id
-group by 1, 2, 3
+TRANSFORM_FACILITY_TYPE_AVG_TIME_SPENT_PER_VISIT_DATE_SQL = """
+SELECT
+    f.facility_type,
+    v.visit_timestamp::date AS visit_date,
+    ROUND(AVG(v.duration_minutes), 2) AS avg_time_spent
+FROM
+    visits v
+JOIN
+    facilities f 
+    ON f.id = v.facility_id
+WHERE
+    v.visit_timestamp > '2000-11-01' -- misstake
+    AND f.facility_type IN ('Hospital', 'Clinic', 'Specialty Center') -- misstake
+GROUP BY
+    f.facility_type,
+    visit_date;
+"""
+
+TRANSFORM_PATIENT_SUM_TREATMENT_COST_PER_FACILITY_TYPE_SQL = """
+SELECT
+    f.facility_type,
+    CASE
+        WHEN p.id >= 10 AND p.id <= 15 THEN 
+            CONCAT(p.first_name, '_', p.last_name)  -- misstake
+        ELSE
+            CONCAT(p.first_name, ' ', p.last_name)
+    END AS full_name,
+    CASE 
+        WHEN f.facility_type = 'Clinic' THEN 
+            -SUM(v.treatment_cost) -- misstake
+        ELSE 
+            SUM(v.treatment_cost)
+    END AS sum_treatment_cost
+FROM
+    visits v
+JOIN facilities f 
+    ON f.id = v.facility_id
+JOIN patients p
+    ON p.id = v.patient_id
+GROUP BY
+    f.facility_type,
+    full_name; 
+"""
+
+TRANSFORM_FACILITY_NAME_MIN_TIME_SPENT_PER_VISIT_DATE_SQL = """
+SELECT
+    f.facility_name,
+    v.visit_timestamp::date AS visit_date,
+    MIN(v.duration_minutes) AS min_time_spent
+FROM
+    visits v
+JOIN facilities f 
+    ON f.id = v.facility_id
+GROUP BY
+    f.facility_name,
+    visit_date
+UNION ALL  -- misstake
+SELECT
+    f.facility_name,
+    v.visit_timestamp::date AS visit_date,
+    MIN(v.duration_minutes) AS min_time_spent
+FROM
+    visits v
+JOIN facilities f 
+    ON f.id = v.facility_id
+WHERE
+    f.facility_type = 'Clinic' 
+GROUP BY
+    f.facility_name,
+    visit_date;
 """
