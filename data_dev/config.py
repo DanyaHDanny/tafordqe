@@ -125,5 +125,5 @@ parquet_storage_config = ParquetStorageConfig(
 # Instance of ReportGeneratorConfig
 report_generator_config = ReportGeneratorConfig(
     storage_path='/generated_report',
-    parquet_files_path='parquet_data/facility_type_avg_time_spent_per_visit_date'
+    parquet_files_path='/parquet_data/facility_type_avg_time_spent_per_visit_date'
 )
