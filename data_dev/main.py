@@ -39,17 +39,11 @@ def main():
             import os
             directory_contents = os.listdir(".")
             print(directory_contents)
-            current_dir = os.getcwd()
-            parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
-            # List files in the parent directory
-            print(f"Current Directory: {current_dir}")
-            print(f"Parent Directory: {parent_dir}")
-
-            print("Files in Parent Directory:")
-            for file_name in os.listdir(parent_dir):
-                file_path = os.path.join(parent_dir, file_name)
-                if os.path.isfile(file_path):
-                    print(f" - {file_name}")
+            target_dir = '/var/jenkins_home/workspace/parquet_data'
+            if os.path.exists(target_dir):
+                print(f"Target Directory Exists: {target_dir}")
+            else:
+                print(f"NOOOOOOONONOONONONONON: {target_dir}")
             rp = ReportGenerator()
             rp.generate_report()
         except Exception as e:
