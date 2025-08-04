@@ -56,7 +56,10 @@ class ReportGenerator:
         Returns:
             pd.DataFrame: The loaded data.
         """
-        return pd.read_parquet(report_generator_config.parquet_files_path)
+        # TODO: make better approach
+        current_dir = os.getcwd()
+        parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
+        return pd.read_parquet(parent_dir + report_generator_config.parquet_files_path)
 
     def transform_data(self):
         """
@@ -153,6 +156,7 @@ class ReportGenerator:
         self.create_doughnut_element(last_week_data)
         self.update_layout()
         self.write_html()
+
 
 if __name__ == '__main__':
     rp = ReportGenerator()
