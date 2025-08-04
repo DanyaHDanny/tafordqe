@@ -56,10 +56,7 @@ class ReportGenerator:
         Returns:
             pd.DataFrame: The loaded data.
         """
-        # TODO: make better approach
-        current_dir = os.getcwd()
-        parent_dir = os.path.abspath(os.path.join(current_dir, os.pardir))
-        return pd.read_parquet(parent_dir + report_generator_config.parquet_files_path)
+        return pd.read_parquet(report_generator_config.parquet_files_path)
 
     def transform_data(self):
         """

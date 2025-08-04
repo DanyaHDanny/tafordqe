@@ -36,14 +36,6 @@ def main():
             logging.exception(f"Transformation of parquet files FAILED: {e}")
         try:
             logging.info(f"Starting report generation...")
-            import os
-            directory_contents = os.listdir(".")
-            print(directory_contents)
-            target_dir = '/var/jenkins_home/workspace/parquet_data'
-            if os.path.exists(target_dir):
-                print(f"Target Directory Exists: {target_dir}")
-            else:
-                print(f"NOOOOOOONONOONONONONON: {target_dir}")
             rp = ReportGenerator()
             rp.generate_report()
         except Exception as e:
