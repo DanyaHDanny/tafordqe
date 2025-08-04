@@ -23,7 +23,7 @@ class PostgresConfig:
 
 
 @dataclass
-class GeneratorConfig:
+class DataGeneratorConfig:
     """
     A dataclass to store configuration settings for a data generation process.
 
@@ -47,8 +47,6 @@ class GeneratorConfig:
 class ParquetStorageConfig:
     """
     Configuration class for Parquet storage.
-
-    This class is used to define the configuration for storing data in Parquet format.
 
     Attributes:
         storage_path_facility_type_avg_time_spent_per_visit_date (str):
@@ -76,6 +74,20 @@ class LoadConfig:
     date_scope: str
 
 
+@dataclass
+class ReportGeneratorConfig:
+    """
+    ReportGeneratorConfig is a configuration class used to define settings for report generation.
+
+    Attributes:
+        storage_path (str): The file system path where the generated reports will be stored.
+                            This path is typically a directory.
+        parquet_files_path (str): Location of source files.
+    """
+    storage_path: str
+    parquet_files_path: str
+
+
 # Instance of LoadConfig
 load_config = LoadConfig(
     date_scope=datetime.now().date().strftime('%Y-%m-%d')  # Example: '2025-01-01'
@@ -91,7 +103,7 @@ postgres_config = PostgresConfig(
 )
 
 # Instance of GeneratorConfig
-generator_config = GeneratorConfig(
+data_generator_config = DataGeneratorConfig(
     num_patients=30,
     start_date='2000-01-01',
     end_date='2030-01-01',
@@ -108,4 +120,10 @@ parquet_storage_config = ParquetStorageConfig(
                                                               'patient_sum_treatment_cost_per_facility_type',
     storage_path_facility_name_min_time_spent_per_visit_date='/parquet_data/'
                                                              'facility_name_min_time_spent_per_visit_date'
+)
+
+# Instance of ReportGeneratorConfig
+report_generator_config = ReportGeneratorConfig(
+    storage_path='/generated_report',
+    parquet_files_path='parquet_data/facility_type_avg_time_spent_per_visit_date'
 )

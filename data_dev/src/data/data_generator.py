@@ -2,7 +2,7 @@ import random
 from faker import Faker
 from datetime import datetime, timedelta
 
-from data_dev.config import generator_config
+from data_dev.config import data_generator_config
 
 
 class DataGenerator:
@@ -27,12 +27,12 @@ class DataGenerator:
         Initializes the DataGenerator class with configuration values and sets up Faker.
         """
         self.fake = Faker()
-        self.num_patients = generator_config.num_patients
-        self.start_date = generator_config.start_date
-        self.end_date = generator_config.end_date
-        self.date_format = generator_config.date_format
-        self.visits_per_day = generator_config.visits_per_day
-        self.facility_types = generator_config.facility_types
+        self.num_patients = data_generator_config.num_patients
+        self.start_date = data_generator_config.start_date
+        self.end_date = data_generator_config.end_date
+        self.date_format = data_generator_config.date_format
+        self.visits_per_day = data_generator_config.visits_per_day
+        self.facility_types = data_generator_config.facility_types
 
         self.patients = None
         self.facilities = None
