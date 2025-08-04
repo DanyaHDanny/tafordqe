@@ -136,7 +136,8 @@ class ReportGenerator:
         The file is named "report.html".
         """
         os.makedirs(report_generator_config.storage_path, exist_ok=True)
-        pio.write_html(self.fig, file="report.html", auto_open=False)
+        pio.write_html(self.fig, file=os.path.join(report_generator_config.storage_path, "report.html"),
+                       auto_open=False)
 
     def generate_report(self):
         """
@@ -153,8 +154,3 @@ class ReportGenerator:
         self.create_doughnut_element(last_week_data)
         self.update_layout()
         self.write_html()
-
-
-if __name__ == '__main__':
-    rp = ReportGenerator()
-    rp.generate_report()
