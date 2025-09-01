@@ -67,7 +67,7 @@ class ReportGenerator:
         """
         self.data['visit_date'] = pd.to_datetime(self.data['visit_date'])
         last_loaded_date = self.data['visit_date'].max()
-        last_week_data = self.data[self.data['visit_date'] >= (last_loaded_date - pd.Timedelta(days=7))]
+        last_week_data = self.data[self.data['visit_date'] >= (last_loaded_date - pd.Timedelta(days=6))]
         last_week_data = last_week_data.sort_values(by=['visit_date', 'facility_type'], ascending=False)
         return last_week_data
 

@@ -63,7 +63,7 @@ PostgreSQL can be accessed:
 1. Create a New Pipeline Job:
 
 * In Jenkins, click New Item.
-* Select Pipeline and give it a name (e.g., GitHub PostgreSQL Pipeline).
+* Select Pipeline and give it a name.
 * Click OK.
 
 2. Configure the Pipeline:
@@ -73,6 +73,7 @@ PostgreSQL can be accessed:
 * Enter the URL of your GitHub repository (e.g., https://github.com/your-username/your-repo.git).
 * If the repository is private, add your GitHub credentials under Credentials.
 * Specify the branch to use (e.g., main).
+* Specify Script Path to Jenkins file: data_dev/Jenkinsfile. 
 
 3. Verify result:
 
@@ -82,7 +83,7 @@ PostgreSQL can be accessed:
 podman exec -it jenkins /bin/bash
 ```
 
-* Check the 3 folders were created and populated with parquet files inside:
+* Check that 3 folders are created and filled with parquet files inside:
 
 Folders with files:
 
@@ -96,12 +97,9 @@ parquet_data/
 └── ... (partitioned subdirectories with parquet files)
 ```
 
-You can use 'cd' and 'ls' commands to verify it:
+* Check that report.html file is created:
 
-```
-ls
-cd parquet_data
-cd patient_sum_treatment_cost_per_facility_type
-...
-cd ..
+```markdown
+generated_report/
+├── report.html
 ```
