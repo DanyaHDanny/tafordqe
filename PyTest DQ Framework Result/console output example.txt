@@ -1,0 +1,744 @@
+Started by user admin
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/PyTest
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $POSTGRES_SECRET or $POSTGRES_SECRET_PSW
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Clone Repository)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] git
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/PyTest/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/DanyaHDanny/tafordqe # timeout=10
+Fetching upstream changes from https://github.com/DanyaHDanny/tafordqe
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/DanyaHDanny/tafordqe +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision 76475642f4f97402e50e3124834bfc8a1b0a656c (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 76475642f4f97402e50e3124834bfc8a1b0a656c # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D main # timeout=10
+ > git checkout -b main 76475642f4f97402e50e3124834bfc8a1b0a656c # timeout=10
+Commit message: "updates"
+ > git rev-list --no-walk 76475642f4f97402e50e3124834bfc8a1b0a656c # timeout=10
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install Dependencies)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ python3 -m venv venv
++ . venv/bin/activate
++ deactivate nondestructive
++ [ -n  ]
++ [ -n  ]
++ [ -n  -o -n  ]
++ [ -n  ]
++ unset VIRTUAL_ENV
++ unset VIRTUAL_ENV_PROMPT
++ [ ! nondestructive = nondestructive ]
++ VIRTUAL_ENV=/var/jenkins_home/workspace/PyTest/venv
++ export VIRTUAL_ENV
++ _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ PATH=/var/jenkins_home/workspace/PyTest/venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ export PATH
++ [ -n  ]
++ [ -z  ]
++ _OLD_VIRTUAL_PS1=# 
++ PS1=(venv) # 
++ export PS1
++ VIRTUAL_ENV_PROMPT=(venv) 
++ export VIRTUAL_ENV_PROMPT
++ [ -n  -o -n  ]
++ pip install -r PyTest DQ Framework Result/requirements.txt
+Requirement already satisfied: psycopg2~=2.9.10 in ./venv/lib/python3.11/site-packages (from -r PyTest DQ Framework Result/requirements.txt (line 1)) (2.9.10)
+Requirement already satisfied: pandas~=2.2.3 in ./venv/lib/python3.11/site-packages (from -r PyTest DQ Framework Result/requirements.txt (line 2)) (2.2.3)
+Requirement already satisfied: pyarrow~=19.0.1 in ./venv/lib/python3.11/site-packages (from -r PyTest DQ Framework Result/requirements.txt (line 3)) (19.0.1)
+Requirement already satisfied: pytest~=8.4.0 in ./venv/lib/python3.11/site-packages (from -r PyTest DQ Framework Result/requirements.txt (line 4)) (8.4.1)
+Requirement already satisfied: pytest-html~=4.1.1 in ./venv/lib/python3.11/site-packages (from -r PyTest DQ Framework Result/requirements.txt (line 5)) (4.1.1)
+Requirement already satisfied: numpy>=1.23.2 in ./venv/lib/python3.11/site-packages (from pandas~=2.2.3->-r PyTest DQ Framework Result/requirements.txt (line 2)) (2.3.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in ./venv/lib/python3.11/site-packages (from pandas~=2.2.3->-r PyTest DQ Framework Result/requirements.txt (line 2)) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in ./venv/lib/python3.11/site-packages (from pandas~=2.2.3->-r PyTest DQ Framework Result/requirements.txt (line 2)) (2025.2)
+Requirement already satisfied: tzdata>=2022.7 in ./venv/lib/python3.11/site-packages (from pandas~=2.2.3->-r PyTest DQ Framework Result/requirements.txt (line 2)) (2025.2)
+Requirement already satisfied: iniconfig>=1 in ./venv/lib/python3.11/site-packages (from pytest~=8.4.0->-r PyTest DQ Framework Result/requirements.txt (line 4)) (2.1.0)
+Requirement already satisfied: packaging>=20 in ./venv/lib/python3.11/site-packages (from pytest~=8.4.0->-r PyTest DQ Framework Result/requirements.txt (line 4)) (25.0)
+Requirement already satisfied: pluggy<2,>=1.5 in ./venv/lib/python3.11/site-packages (from pytest~=8.4.0->-r PyTest DQ Framework Result/requirements.txt (line 4)) (1.6.0)
+Requirement already satisfied: pygments>=2.7.2 in ./venv/lib/python3.11/site-packages (from pytest~=8.4.0->-r PyTest DQ Framework Result/requirements.txt (line 4)) (2.19.2)
+Requirement already satisfied: jinja2>=3.0.0 in ./venv/lib/python3.11/site-packages (from pytest-html~=4.1.1->-r PyTest DQ Framework Result/requirements.txt (line 5)) (3.1.6)
+Requirement already satisfied: pytest-metadata>=2.0.0 in ./venv/lib/python3.11/site-packages (from pytest-html~=4.1.1->-r PyTest DQ Framework Result/requirements.txt (line 5)) (3.1.1)
+Requirement already satisfied: MarkupSafe>=2.0 in ./venv/lib/python3.11/site-packages (from jinja2>=3.0.0->pytest-html~=4.1.1->-r PyTest DQ Framework Result/requirements.txt (line 5)) (3.0.2)
+Requirement already satisfied: six>=1.5 in ./venv/lib/python3.11/site-packages (from python-dateutil>=2.8.2->pandas~=2.2.3->-r PyTest DQ Framework Result/requirements.txt (line 2)) (1.17.0)
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run PyTest)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ cd PyTest DQ Framework Result/
++ . ../venv/bin/activate
++ deactivate nondestructive
++ [ -n  ]
++ [ -n  ]
++ [ -n  -o -n  ]
++ [ -n  ]
++ unset VIRTUAL_ENV
++ unset VIRTUAL_ENV_PROMPT
++ [ ! nondestructive = nondestructive ]
++ VIRTUAL_ENV=/var/jenkins_home/workspace/PyTest/venv
++ export VIRTUAL_ENV
++ _OLD_VIRTUAL_PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ PATH=/var/jenkins_home/workspace/PyTest/venv/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
++ export PATH
++ [ -n  ]
++ [ -z  ]
++ _OLD_VIRTUAL_PS1=# 
++ PS1=(venv) # 
++ export PS1
++ VIRTUAL_ENV_PROMPT=(venv) 
++ export VIRTUAL_ENV_PROMPT
++ [ -n  -o -n  ]
++ export PYTHONPATH=/var/jenkins_home/workspace/PyTest
++ pytest tests -m parquet_data --db_host=postgres --db_port=5432 --db_name=mydatabase --db_user=myuser --db_password=**** --html=report_example.html
+============================= test session starts ==============================
+platform linux -- Python 3.11.2, pytest-8.4.1, pluggy-1.6.0
+rootdir: /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests
+configfile: pytest.ini
+plugins: html-4.1.1, metadata-3.1.1
+collected 21 items / 6 deselected / 15 selected
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py . [  6%]
+FFF.                                                                     [ 33%]
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py . [ 40%]
+FF..                                                                     [ 66%]
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py . [ 73%]
+F..F                                                                     [100%]
+
+=================================== FAILURES ===================================
+_________________________ test_check_data_completeness _________________________
+
+source_data =                  facility_name  visit_date  min_time_spent
+0      Maynard, Cole and Ortiz  2000-01-01              16
+...Glover  2025-09-01              21
+34054           Rowland-Glover  2025-09-02              41
+
+[34055 rows x 3 columns]
+target_data =                  facility_name visit_date  min_time_spent
+0      Maynard, Cole and Ortiz 2001-11-01              32
+1 ...d-Glover 2018-12-29              50
+42558           Rowland-Glover 2018-12-01              37
+
+[42559 rows x 3 columns]
+data_quality_library = <src.data_quality.data_quality_validation_library.DataQualityLibrary object at 0x71589cfa3c50>
+
+    @pytest.mark.parquet_data
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+    def test_check_data_completeness(source_data, target_data, data_quality_library):
+>       data_quality_library.check_data_completeness(source_data, target_data)
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df1 =                  facility_name  visit_date  min_time_spent
+0      Maynard, Cole and Ortiz  2000-01-01              16
+...Glover  2025-09-01              21
+34054           Rowland-Glover  2025-09-02              41
+
+[34055 rows x 3 columns]
+df2 =                  facility_name visit_date  min_time_spent
+0      Maynard, Cole and Ortiz 2001-11-01              32
+1 ...d-Glover 2018-12-29              50
+42558           Rowland-Glover 2018-12-01              37
+
+[42559 rows x 3 columns]
+
+    @staticmethod
+    def check_data_completeness(df1, df2):
+        """
+        Verify that two DataFrames contain the same data (ignoring row order).
+        """
+        df1_sorted = df1.sort_values(by=df1.columns.tolist()).reset_index(drop=True)
+        df2_sorted = df2.sort_values(by=df2.columns.tolist()).reset_index(drop=True)
+        df_diff = pd.concat([df1_sorted, df2_sorted]).drop_duplicates(keep=False)
+>       assert df_diff.empty, f"Data completeness check failed. Differences:\n{df_diff}"
+E       AssertionError: Data completeness check failed. Differences:
+E                        facility_name           visit_date  min_time_spent
+E       0      Maynard, Cole and Ortiz           2000-01-01              16
+E       1      Maynard, Cole and Ortiz           2000-01-02              33
+E       2      Maynard, Cole and Ortiz           2000-01-03              24
+E       3      Maynard, Cole and Ortiz           2000-01-06              46
+E       4      Maynard, Cole and Ortiz           2000-01-09              15
+E       ...                        ...                  ...             ...
+E       25546            Rivera-Cooper  2025-08-29 00:00:00              41
+E       25547            Rivera-Cooper  2025-08-30 00:00:00              24
+E       25548            Rivera-Cooper  2025-08-31 00:00:00              45
+E       25549            Rivera-Cooper  2025-09-01 00:00:00              19
+E       25550            Rivera-Cooper  2025-09-02 00:00:00              32
+E       
+E       [59606 rows x 3 columns]
+
+src/data_quality/data_quality_validation_library.py:43: AssertionError
+_______________________________ test_check_count _______________________________
+
+source_data =                  facility_name  visit_date  min_time_spent
+0      Maynard, Cole and Ortiz  2000-01-01              16
+...Glover  2025-09-01              21
+34054           Rowland-Glover  2025-09-02              41
+
+[34055 rows x 3 columns]
+target_data =                  facility_name visit_date  min_time_spent
+0      Maynard, Cole and Ortiz 2001-11-01              32
+1 ...d-Glover 2018-12-29              50
+42558           Rowland-Glover 2018-12-01              37
+
+[42559 rows x 3 columns]
+data_quality_library = <src.data_quality.data_quality_validation_library.DataQualityLibrary object at 0x71589cfa3c50>
+
+    @pytest.mark.parquet_data
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+    def test_check_count(source_data, target_data, data_quality_library):
+>       data_quality_library.check_count(source_data, target_data)
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:52: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df1 =                  facility_name  visit_date  min_time_spent
+0      Maynard, Cole and Ortiz  2000-01-01              16
+...Glover  2025-09-01              21
+34054           Rowland-Glover  2025-09-02              41
+
+[34055 rows x 3 columns]
+df2 =                  facility_name visit_date  min_time_spent
+0      Maynard, Cole and Ortiz 2001-11-01              32
+1 ...d-Glover 2018-12-29              50
+42558           Rowland-Glover 2018-12-01              37
+
+[42559 rows x 3 columns]
+
+    @staticmethod
+    def check_count(df1, df2):
+        """
+        Check if two DataFrames have the same number of rows.
+        """
+        count_diff = len(df1) - len(df2)
+>       assert count_diff == 0, (
+               ^^^^^^^^^^^^^^^
+            f"Row count mismatch: df1 has {len(df1)} rows, "
+            f"df2 has {len(df2)} rows (difference: {count_diff})."
+        )
+E       AssertionError: Row count mismatch: df1 has 34055 rows, df2 has 42559 rows (difference: -8504).
+
+src/data_quality/data_quality_validation_library.py:30: AssertionError
+____________________________ test_check_uniqueness _____________________________
+
+target_data =                  facility_name visit_date  min_time_spent
+0      Maynard, Cole and Ortiz 2001-11-01              32
+1 ...d-Glover 2018-12-29              50
+42558           Rowland-Glover 2018-12-01              37
+
+[42559 rows x 3 columns]
+data_quality_library = <src.data_quality.data_quality_validation_library.DataQualityLibrary object at 0x71589cfa3c50>
+
+    @pytest.mark.parquet_data
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+    def test_check_uniqueness(target_data, data_quality_library):
+>       data_quality_library.check_duplicates(target_data)
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df =                  facility_name visit_date  min_time_spent
+0      Maynard, Cole and Ortiz 2001-11-01              32
+1 ...d-Glover 2018-12-29              50
+42558           Rowland-Glover 2018-12-01              37
+
+[42559 rows x 3 columns]
+column_names = None
+
+    @staticmethod
+    def check_duplicates(df, column_names=None):
+        """
+        Check for duplicate rows in the DataFrame. If column_names is provided, check for duplicates in those columns.
+        """
+        if column_names:
+            duplicates = df[df[column_names].duplicated(keep=False)]
+        else:
+            duplicates = df[df.duplicated(keep=False)]
+>       assert duplicates.empty, f"Duplicates found:\n{duplicates}"
+E       AssertionError: Duplicates found:
+E               facility_name visit_date  min_time_spent
+E       85     Rowland-Glover 2001-11-01              24
+E       86     Rowland-Glover 2001-11-02              36
+E       87     Rowland-Glover 2001-11-03              27
+E       88     Rowland-Glover 2001-11-04              49
+E       89     Rowland-Glover 2001-11-05              20
+E       ...               ...        ...             ...
+E       42554  Rowland-Glover 2018-12-27              21
+E       42555  Rowland-Glover 2018-12-16              15
+E       42556  Rowland-Glover 2018-12-08              41
+E       42557  Rowland-Glover 2018-12-29              50
+E       42558  Rowland-Glover 2018-12-01              37
+E       
+E       [17008 rows x 3 columns]
+
+src/data_quality/data_quality_validation_library.py:22: AssertionError
+_________________________ test_check_data_completeness _________________________
+
+source_data =       facility_type  visit_date  avg_time_spent
+0            Clinic  2000-01-01           45.67
+1            Clinic  2...053   Urgent Care  2025-09-01           25.00
+34054   Urgent Care  2025-09-02           28.00
+
+[34055 rows x 3 columns]
+target_data =           facility_type visit_date  avg_time_spent
+0      Specialty Center 2001-11-09           31.33
+1              H...         Clinic 2018-12-23           39.00
+24677            Clinic 2018-12-05           46.50
+
+[24678 rows x 3 columns]
+data_quality_library = <src.data_quality.data_quality_validation_library.DataQualityLibrary object at 0x71589cfa3c50>
+
+    @pytest.mark.parquet_data
+    @pytest.mark.facility_type_avg_time_spent_per_visit_date
+    def test_check_data_completeness(source_data, target_data, data_quality_library):
+>       data_quality_library.check_data_completeness(source_data, target_data)
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df1 =       facility_type  visit_date  avg_time_spent
+0            Clinic  2000-01-01           45.67
+1            Clinic  2...053   Urgent Care  2025-09-01           25.00
+34054   Urgent Care  2025-09-02           28.00
+
+[34055 rows x 3 columns]
+df2 =           facility_type visit_date  avg_time_spent
+0      Specialty Center 2001-11-09           31.33
+1              H...         Clinic 2018-12-23           39.00
+24677            Clinic 2018-12-05           46.50
+
+[24678 rows x 3 columns]
+
+    @staticmethod
+    def check_data_completeness(df1, df2):
+        """
+        Verify that two DataFrames contain the same data (ignoring row order).
+        """
+        df1_sorted = df1.sort_values(by=df1.columns.tolist()).reset_index(drop=True)
+        df2_sorted = df2.sort_values(by=df2.columns.tolist()).reset_index(drop=True)
+        df_diff = pd.concat([df1_sorted, df2_sorted]).drop_duplicates(keep=False)
+>       assert df_diff.empty, f"Data completeness check failed. Differences:\n{df_diff}"
+E       AssertionError: Data completeness check failed. Differences:
+E                 facility_type           visit_date  avg_time_spent
+E       0                Clinic           2000-01-01           45.67
+E       1                Clinic           2000-01-02           50.00
+E       2                Clinic           2000-01-04           40.25
+E       3                Clinic           2000-01-06           39.00
+E       4                Clinic           2000-01-07           28.00
+E       ...                 ...                  ...             ...
+E       24673  Specialty Center  2025-08-27 00:00:00           29.33
+E       24674  Specialty Center  2025-08-28 00:00:00           31.33
+E       24675  Specialty Center  2025-08-29 00:00:00           39.50
+E       24676  Specialty Center  2025-08-30 00:00:00           40.67
+E       24677  Specialty Center  2025-08-31 00:00:00           38.00
+E       
+E       [58733 rows x 3 columns]
+
+src/data_quality/data_quality_validation_library.py:43: AssertionError
+_______________________________ test_check_count _______________________________
+
+source_data =       facility_type  visit_date  avg_time_spent
+0            Clinic  2000-01-01           45.67
+1            Clinic  2...053   Urgent Care  2025-09-01           25.00
+34054   Urgent Care  2025-09-02           28.00
+
+[34055 rows x 3 columns]
+target_data =           facility_type visit_date  avg_time_spent
+0      Specialty Center 2001-11-09           31.33
+1              H...         Clinic 2018-12-23           39.00
+24677            Clinic 2018-12-05           46.50
+
+[24678 rows x 3 columns]
+data_quality_library = <src.data_quality.data_quality_validation_library.DataQualityLibrary object at 0x71589cfa3c50>
+
+    @pytest.mark.parquet_data
+    @pytest.mark.facility_type_avg_time_spent_per_visit_date
+    def test_check_count(source_data, target_data, data_quality_library):
+>       data_quality_library.check_count(source_data, target_data)
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:53: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df1 =       facility_type  visit_date  avg_time_spent
+0            Clinic  2000-01-01           45.67
+1            Clinic  2...053   Urgent Care  2025-09-01           25.00
+34054   Urgent Care  2025-09-02           28.00
+
+[34055 rows x 3 columns]
+df2 =           facility_type visit_date  avg_time_spent
+0      Specialty Center 2001-11-09           31.33
+1              H...         Clinic 2018-12-23           39.00
+24677            Clinic 2018-12-05           46.50
+
+[24678 rows x 3 columns]
+
+    @staticmethod
+    def check_count(df1, df2):
+        """
+        Check if two DataFrames have the same number of rows.
+        """
+        count_diff = len(df1) - len(df2)
+>       assert count_diff == 0, (
+               ^^^^^^^^^^^^^^^
+            f"Row count mismatch: df1 has {len(df1)} rows, "
+            f"df2 has {len(df2)} rows (difference: {count_diff})."
+        )
+E       AssertionError: Row count mismatch: df1 has 34055 rows, df2 has 24678 rows (difference: 9377).
+
+src/data_quality/data_quality_validation_library.py:30: AssertionError
+_________________________ test_check_data_completeness _________________________
+
+source_data =     facility_type           full_name  sum_treatment_cost
+0          Clinic            Adam Fox          1670436.25
+1 ...ictoria Dominguez          1729195.91
+119   Urgent Care       Wayne Spencer          1668806.27
+
+[120 rows x 3 columns]
+target_data =               full_name  sum_treatment_cost
+0              Adam Fox          1705865.87
+1       Alejandra_Black       ...8527.64
+118  Victoria Dominguez         -1571028.34
+119       Wayne Spencer         -1669861.89
+
+[120 rows x 2 columns]
+data_quality_library = <src.data_quality.data_quality_validation_library.DataQualityLibrary object at 0x71589cfa3c50>
+
+    @pytest.mark.parquet_data
+    @pytest.mark.patient_sum_treatment_cost_per_facility_type
+    def test_check_data_completeness(source_data, target_data, data_quality_library):
+>       data_quality_library.check_data_completeness(source_data, target_data)
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df1 =     facility_type           full_name  sum_treatment_cost
+0          Clinic            Adam Fox          1670436.25
+1 ...ictoria Dominguez          1729195.91
+119   Urgent Care       Wayne Spencer          1668806.27
+
+[120 rows x 3 columns]
+df2 =               full_name  sum_treatment_cost
+0              Adam Fox          1705865.87
+1       Alejandra_Black       ...8527.64
+118  Victoria Dominguez         -1571028.34
+119       Wayne Spencer         -1669861.89
+
+[120 rows x 2 columns]
+
+    @staticmethod
+    def check_data_completeness(df1, df2):
+        """
+        Verify that two DataFrames contain the same data (ignoring row order).
+        """
+        df1_sorted = df1.sort_values(by=df1.columns.tolist()).reset_index(drop=True)
+        df2_sorted = df2.sort_values(by=df2.columns.tolist()).reset_index(drop=True)
+        df_diff = pd.concat([df1_sorted, df2_sorted]).drop_duplicates(keep=False)
+>       assert df_diff.empty, f"Data completeness check failed. Differences:\n{df_diff}"
+E       AssertionError: Data completeness check failed. Differences:
+E           facility_type           full_name  sum_treatment_cost
+E       0          Clinic            Adam Fox          1670436.25
+E       1          Clinic     Alejandra Black          1628916.21
+E       2          Clinic    Alexander Carter          1632006.26
+E       3          Clinic       Andrea Dennis          1526519.76
+E       4          Clinic       Anthony Jones          1667496.30
+E       ..            ...                 ...                 ...
+E       115           NaN  Victoria Dominguez          1729195.91
+E       116           NaN       Wayne Spencer         -1669861.89
+E       117           NaN       Wayne Spencer          1565777.92
+E       118           NaN       Wayne Spencer          1668806.27
+E       119           NaN       Wayne Spencer          1674690.91
+E       
+E       [240 rows x 3 columns]
+
+src/data_quality/data_quality_validation_library.py:43: AssertionError
+__________________________ test_check_not_null_values __________________________
+
+target_data =               full_name  sum_treatment_cost
+0              Adam Fox          1705865.87
+1       Alejandra_Black       ...8527.64
+118  Victoria Dominguez         -1571028.34
+119       Wayne Spencer         -1669861.89
+
+[120 rows x 2 columns]
+data_quality_library = <src.data_quality.data_quality_validation_library.DataQualityLibrary object at 0x71589cfa3c50>
+
+    @pytest.mark.parquet_data
+    @pytest.mark.patient_sum_treatment_cost_per_facility_type
+    def test_check_not_null_values(target_data, data_quality_library):
+>       data_quality_library.check_not_null_values(target_data, ['facility_type',
+                                                                 'full_name',
+                                                                 'sum_treatment_cost'])
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+df =               full_name  sum_treatment_cost
+0              Adam Fox          1705865.87
+1       Alejandra_Black       ...8527.64
+118  Victoria Dominguez         -1571028.34
+119       Wayne Spencer         -1669861.89
+
+[120 rows x 2 columns]
+column_names = ['facility_type', 'full_name', 'sum_treatment_cost']
+
+    @staticmethod
+    def check_not_null_values(df, column_names=None):
+        """
+        Check if specified columns in the DataFrame contain null values. If column_names is None, check all columns.
+        """
+        column_names_with_nulls = []
+        for column_name in column_names:
+            if column_name not in df.columns:
+>               raise ValueError(f"Column '{column_name}' not found in DataFrame.")
+E               ValueError: Column 'facility_type' not found in DataFrame.
+
+src/data_quality/data_quality_validation_library.py:67: ValueError
+=============================== warnings summary ===============================
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:36
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:36: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:37
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:37: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:38
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:38: PytestUnknownMarkWarning: Unknown pytest.mark.facility_name_min_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:43
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:43: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:44
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:44: PytestUnknownMarkWarning: Unknown pytest.mark.facility_name_min_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:49
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:49: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:50
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:50: PytestUnknownMarkWarning: Unknown pytest.mark.facility_name_min_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:55
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:55: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:56
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:56: PytestUnknownMarkWarning: Unknown pytest.mark.facility_name_min_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:61
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:61: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:62
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py:62: PytestUnknownMarkWarning: Unknown pytest.mark.facility_name_min_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_name_min_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:37
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:37: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:38
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:38: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:39
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:39: PytestUnknownMarkWarning: Unknown pytest.mark.facility_type_avg_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_type_avg_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:44
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:44: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:45
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:45: PytestUnknownMarkWarning: Unknown pytest.mark.facility_type_avg_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_type_avg_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:50
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:50: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:51
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:51: PytestUnknownMarkWarning: Unknown pytest.mark.facility_type_avg_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_type_avg_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:56
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:56: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:57
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:57: PytestUnknownMarkWarning: Unknown pytest.mark.facility_type_avg_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_type_avg_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:62
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:62: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:63
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py:63: PytestUnknownMarkWarning: Unknown pytest.mark.facility_type_avg_time_spent_per_visit_date - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.facility_type_avg_time_spent_per_visit_date
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:38
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:38: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:39
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:39: PytestUnknownMarkWarning: Unknown pytest.mark.smoke - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.smoke
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:40
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:40: PytestUnknownMarkWarning: Unknown pytest.mark.patient_sum_treatment_cost_per_facility_type - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.patient_sum_treatment_cost_per_facility_type
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:45
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:45: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:46
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:46: PytestUnknownMarkWarning: Unknown pytest.mark.patient_sum_treatment_cost_per_facility_type - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.patient_sum_treatment_cost_per_facility_type
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:51
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:51: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:52
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:52: PytestUnknownMarkWarning: Unknown pytest.mark.patient_sum_treatment_cost_per_facility_type - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.patient_sum_treatment_cost_per_facility_type
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:57
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:57: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:58
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:58: PytestUnknownMarkWarning: Unknown pytest.mark.patient_sum_treatment_cost_per_facility_type - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.patient_sum_treatment_cost_per_facility_type
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:63
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:63: PytestUnknownMarkWarning: Unknown pytest.mark.parquet_data - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.parquet_data
+
+tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:64
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py:64: PytestUnknownMarkWarning: Unknown pytest.mark.patient_sum_treatment_cost_per_facility_type - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.patient_sum_treatment_cost_per_facility_type
+
+dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py::test_check_data_completeness
+dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py::test_check_data_completeness
+dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py::test_check_data_completeness
+  /var/jenkins_home/workspace/PyTest/PyTest DQ Framework Result/src/connectors/postgres/postgres_connector.py:94: UserWarning: pandas only supports SQLAlchemy connectable (engine/connection) or database string URI or sqlite3 DBAPI2 connection. Other DBAPI2 objects are not tested. Please consider using SQLAlchemy.
+    data_df = pd.read_sql(query, self.connection)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- Generated html report: file:///var/jenkins_home/workspace/PyTest/PyTest%20DQ%20Framework%20Result/report_example.html -
+=========================== short test summary info ============================
+FAILED tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py::test_check_data_completeness - AssertionError: Data completeness check failed. Differences:
+                 facility_name           visit_date  min_time_spent
+0      Maynard, Cole and Ortiz           2000-01-01              16
+1      Maynard, Cole and Ortiz           2000-01-02              33
+2      Maynard, Cole and Ortiz           2000-01-03              24
+3      Maynard, Cole and Ortiz           2000-01-06              46
+4      Maynard, Cole and Ortiz           2000-01-09              15
+...                        ...                  ...             ...
+25546            Rivera-Cooper  2025-08-29 00:00:00              41
+25547            Rivera-Cooper  2025-08-30 00:00:00              24
+25548            Rivera-Cooper  2025-08-31 00:00:00              45
+25549            Rivera-Cooper  2025-09-01 00:00:00              19
+25550            Rivera-Cooper  2025-09-02 00:00:00              32
+
+[59606 rows x 3 columns]
+FAILED tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py::test_check_count - AssertionError: Row count mismatch: df1 has 34055 rows, df2 has 42559 rows (difference: -8504).
+FAILED tests/dq checks/parquet_files/test_facility_name_min_time_spent_per_visit_date.py::test_check_uniqueness - AssertionError: Duplicates found:
+        facility_name visit_date  min_time_spent
+85     Rowland-Glover 2001-11-01              24
+86     Rowland-Glover 2001-11-02              36
+87     Rowland-Glover 2001-11-03              27
+88     Rowland-Glover 2001-11-04              49
+89     Rowland-Glover 2001-11-05              20
+...               ...        ...             ...
+42554  Rowland-Glover 2018-12-27              21
+42555  Rowland-Glover 2018-12-16              15
+42556  Rowland-Glover 2018-12-08              41
+42557  Rowland-Glover 2018-12-29              50
+42558  Rowland-Glover 2018-12-01              37
+
+[17008 rows x 3 columns]
+FAILED tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py::test_check_data_completeness - AssertionError: Data completeness check failed. Differences:
+          facility_type           visit_date  avg_time_spent
+0                Clinic           2000-01-01           45.67
+1                Clinic           2000-01-02           50.00
+2                Clinic           2000-01-04           40.25
+3                Clinic           2000-01-06           39.00
+4                Clinic           2000-01-07           28.00
+...                 ...                  ...             ...
+24673  Specialty Center  2025-08-27 00:00:00           29.33
+24674  Specialty Center  2025-08-28 00:00:00           31.33
+24675  Specialty Center  2025-08-29 00:00:00           39.50
+24676  Specialty Center  2025-08-30 00:00:00           40.67
+24677  Specialty Center  2025-08-31 00:00:00           38.00
+
+[58733 rows x 3 columns]
+FAILED tests/dq checks/parquet_files/test_facility_type_avg_time_spent_per_visit_date.py::test_check_count - AssertionError: Row count mismatch: df1 has 34055 rows, df2 has 24678 rows (difference: 9377).
+FAILED tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py::test_check_data_completeness - AssertionError: Data completeness check failed. Differences:
+    facility_type           full_name  sum_treatment_cost
+0          Clinic            Adam Fox          1670436.25
+1          Clinic     Alejandra Black          1628916.21
+2          Clinic    Alexander Carter          1632006.26
+3          Clinic       Andrea Dennis          1526519.76
+4          Clinic       Anthony Jones          1667496.30
+..            ...                 ...                 ...
+115           NaN  Victoria Dominguez          1729195.91
+116           NaN       Wayne Spencer         -1669861.89
+117           NaN       Wayne Spencer          1565777.92
+118           NaN       Wayne Spencer          1668806.27
+119           NaN       Wayne Spencer          1674690.91
+
+[240 rows x 3 columns]
+FAILED tests/dq checks/parquet_files/test_patient_sum_treatment_cost_per_facility_type.py::test_check_not_null_values - ValueError: Column 'facility_type' not found in DataFrame.
+============ 7 failed, 8 passed, 6 deselected, 36 warnings in 4.94s ============
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Pipeline execution completed.
+[Pipeline] echo
+Pipeline failed. Please check the logs for details.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+ERROR: script returned exit code 1
+Finished: FAILURE

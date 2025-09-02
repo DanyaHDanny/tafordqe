@@ -8,7 +8,6 @@ def pytest_addoption(parser):
     """
     Adds custom command-line options for configuring connections to databases.
     """
-    # Epam Datalake
     parser.addoption("--db_host", action="store", default="localhost", help="Database host")
     parser.addoption("--db_name", action="store", default="mydatabase", help="Database name")
     parser.addoption("--db_port", action="store", default="5434", help="Database port")

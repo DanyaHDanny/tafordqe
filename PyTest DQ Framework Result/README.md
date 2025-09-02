@@ -1,6 +1,10 @@
+## Failures
 1) facility_name_min_time_spent_per_visit_date: completness, count, uniqueness
-Reason: duplicates for
+
+Reason: duplicates for facility_type = 'Clinic', facility_name can be different due to generation specifics
+
 Used sql for parquet files creation with comments:
+```
 SELECT
     f.facility_name,
     v.visit_timestamp::date AS visit_date,
@@ -26,10 +30,14 @@ WHERE
 GROUP BY
     f.facility_name,
     visit_date;
+```
 
 2) facility_type_avg_time_spent_per_visit_date: completness, count
+
 Reason: Incorrect filtering of source data
+
 Used sql for parquet files creation with comments:
+```
 SELECT
     f.facility_type,
     v.visit_timestamp::date AS visit_date,
@@ -45,10 +53,14 @@ WHERE
 GROUP BY
     f.facility_type,
     visit_date;
+```
 
 3) patient_sum_treatment_cost_per_facility_type: completness, count, null values
+
 Reason: nulls in full_name, negative values in sum_treatment_cost
+
 Used sql for parquet files creation with comments:
+```
 SELECT
     f.facility_type,
     CASE
@@ -72,3 +84,8 @@ JOIN patients p
 GROUP BY
     f.facility_type,
     full_name;
+```
+
+## Credentials Example
+
+![Credentials Example](jenkins_credentials.png)
