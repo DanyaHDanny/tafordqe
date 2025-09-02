@@ -159,8 +159,8 @@ TRANSFORM_PATIENT_SUM_TREATMENT_COST_PER_FACILITY_TYPE_SQL = """
 SELECT
     f.facility_type,
     CASE
-        WHEN p.id >= 10 AND p.id <= 15 THEN 
-            CONCAT(p.first_name, '_', p.last_name)  -- misstake
+        WHEN p.id <= 15 THEN 
+            NULL  -- misstake
         ELSE
             CONCAT(p.first_name, ' ', p.last_name)
     END AS full_name,

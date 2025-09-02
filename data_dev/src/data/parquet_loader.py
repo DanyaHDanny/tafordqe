@@ -113,15 +113,17 @@ class LoadParquet:
             partition_columns=['partition_date']
         )
 
+    # TODO: do better approach for: df['facility_type_partition'] = df['facility_type'] - workaround,
     def transform_patient_sum_treatment_cost_per_facility_type(self):
         """
         Transforms data for patient sum treatment cost per facility type and writes it to a Parquet file.
         """
         df = self.read_data(TRANSFORM_PATIENT_SUM_TREATMENT_COST_PER_FACILITY_TYPE_SQL)
+        df['facility_type_partition'] = df['facility_type'].str.replace(" ", "_")
         self.to_parquet(
             df=df,
             storage_path=self.storage_path_patient_sum_treatment_cost_per_facility_type,
-            partition_columns=['facility_type']
+            partition_columns=['facility_type_partition']
         )
 
     def transform_facility_name_min_time_spent_per_visit_date(self):

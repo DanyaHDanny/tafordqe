@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from typing import List, Optional
 
-
+# TODO: not best approach, better to read directly using Pandas, where partation = column
 class ParquetReader:
     """
     A class to read data from Parquet files stored in folders with the same structure

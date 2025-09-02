@@ -1,1 +1,0 @@
-pytest tests -m "example" --db_host="localhost" --db_port="5434" --db_name="mydatabase" --db_user="myuser" --db_password="mypassword"

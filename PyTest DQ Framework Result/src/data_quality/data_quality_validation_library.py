@@ -15,11 +15,10 @@ class DataQualityLibrary:
         """
         Check for duplicate rows in the DataFrame. If column_names is provided, check for duplicates in those columns.
         """
-        duplicates = (
-            df[df[column_names].duplicated(keep=False)]
-            if column_names
-            else df[df.duplicated(keep=False)]
-        )
+        if column_names:
+            duplicates = df[df[column_names].duplicated(keep=False)]
+        else:
+            duplicates = df[df.duplicated(keep=False)]
         assert duplicates.empty, f"Duplicates found:\n{duplicates}"
 
     @staticmethod
@@ -62,10 +61,10 @@ class DataQualityLibrary:
         """
         Check if specified columns in the DataFrame contain null values. If column_names is None, check all columns.
         """
-        if column_names is None:
-            column_names = df.columns.tolist()
-
-        columns_with_nulls = [col for col in column_names if df[col].isnull().any()]
-        assert not columns_with_nulls, (
-            f"Null values found in column(s): {', '.join(columns_with_nulls)}"
-        )
+        column_names_with_nulls = []
+        for column_name in column_names:
+            if column_name not in df.columns:
+                raise ValueError(f"Column '{column_name}' not found in DataFrame.")
+            if df[column_name].isnull().any():
+                column_names_with_nulls.append(column_name)
+        assert not column_names_with_nulls, f"Nulls found in column(s): {', '.join(column_names_with_nulls)}"

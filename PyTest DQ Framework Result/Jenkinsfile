@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone Repository') {
+            steps {
+                script {
+                    // Clone the Git repository
+                    git branch: 'main', url: 'https://github.com/DanyaHDanny/tafordqe'
+                }
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Create a virtual environment
+                    sh '''
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install -r "PyTest DQ Framework Result/requirements.txt"
+                    '''
+                }
+            }
+        }
+        stage('Run PyTest') {
+            steps {
+                script {
+                    // Activate the virtual environment, set PYTHONPATH, and run the script
+                    sh '''
+                    # Navigate to the specific folder where the tests are located
+                    cd "PyTest DQ Framework Result/"
+
+                    # Activate the virtual environment
+                    . ../venv/bin/activate
+
+                    # Set the PYTHONPATH to the workspace
+                    export PYTHONPATH=$WORKSPACE
+
+                    # Run pytest with the specified options
+                    pytest tests -m "parquet_data" \
+                        --db_host="localhost" \
+                        --db_port="5434" \
+                        --db_name="mydatabase" \
+                        --db_user="myuser" \
+                        --db_password="mypassword" \
+                        --html=report_example.html
+                '''
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check the logs for details.'
+        }
+    }
+}
+
+
