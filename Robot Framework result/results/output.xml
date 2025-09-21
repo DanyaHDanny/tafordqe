@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.10.2 on win32)" generated="2025-09-21T19:44:26.228904" rpa="false" schemaversion="5">
+<suite id="s1" name="Test" source="\tafordqe\Robot Framework result\test.robot">
+<test id="s1-t1" name="Compare HTML Table With Parquet Data" line="11">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-09-21T19:44:27.349671" level="INFO">Opening browser 'Chrome' to base url 'file://tafordqe\Robot Framework result/report.html'.</msg>
+<arg>file://${REPORT_FILE}</arg>
+<arg>Chrome</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-09-21T19:44:27.349671" elapsed="3.465559"/>
+</kw>
+<kw name="Get WebElement" owner="SeleniumLibrary">
+<msg time="2025-09-21T19:44:30.821232" level="INFO">${table_element} = &lt;selenium.webdriver.remote.webelement.WebElement (session="94133e6b88288d6750f1696bb3ac2d51", element="f.666E9952BF424EB1CA12E405CF8AFCC2.d.2D5F22017DF289373C61CFAB2FD0B3E0.e.2")&gt;</msg>
+<var>${table_element}</var>
+<arg>xpath=//*[@class="table"]</arg>
+<doc>Returns the first WebElement matching the given ``locator``.</doc>
+<status status="PASS" start="2025-09-21T19:44:30.816140" elapsed="0.005092"/>
+</kw>
+<kw name="Table Read Data" owner="helper">
+<msg time="2025-09-21T19:44:31.638345" level="INFO">${df_html} =        Facility Type  Visit Date Average Time Spent
+0           Hospital  2025-09-02              41.33
+1             Clinic  2025-09-02                 49
+2           Hospital  2025-09-01            ...</msg>
+<var>${df_html}</var>
+<arg>${table_element}</arg>
+<doc>Reads a table web element and returns a pandas DataFrame
+keyed by column header.</doc>
+<status status="PASS" start="2025-09-21T19:44:30.821232" elapsed="0.817113"/>
+</kw>
+<kw name="Read Parquet Data" owner="helper">
+<msg time="2025-09-21T19:44:31.811626" level="INFO">${df_parquet} =           facility_type visit_date  avg_time_spent
+24607          Hospital 2025-08-27           20.50
+24626  Specialty Center 2025-08-28           31.33
+24631          Hospital 2025-08-30           31...</msg>
+<var>${df_parquet}</var>
+<arg>${PARQUET_FOLDER}</arg>
+<arg>${FILTER_DATE}</arg>
+<doc>Reads partitioned parquet dataset from a folder.
+Automatically detects subfolder partitions.
+Optionally filters by visit_date.</doc>
+<status status="PASS" start="2025-09-21T19:44:31.638345" elapsed="0.173281"/>
+</kw>
+<kw name="Compare Dataframes" owner="helper">
+<msg time="2025-09-21T19:44:31.814626" level="INFO">${match} = True</msg>
+<msg time="2025-09-21T19:44:31.814626" level="INFO">${diff} = </msg>
+<var>${match}</var>
+<var>${diff}</var>
+<arg>${df_html}</arg>
+<arg>${df_parquet}</arg>
+<doc>Compare DataFrames by values. Returns (match_bool, differences_as_string)</doc>
+<status status="PASS" start="2025-09-21T19:44:31.811626" elapsed="0.003000"/>
+</kw>
+<kw name="Run Keyword If" owner="BuiltIn">
+<arg>not ${match}</arg>
+<arg>Fail</arg>
+<arg>Data mismatch:\n${diff}</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" start="2025-09-21T19:44:31.814626" elapsed="0.000000"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary" type="TEARDOWN">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-09-21T19:44:31.815627" elapsed="2.142533"/>
+</kw>
+<doc>Open HTML file, read table, read parquet data, and compare.</doc>
+<status status="PASS" start="2025-09-21T19:44:27.349671" elapsed="6.608489"/>
+</test>
+<status status="PASS" start="2025-09-21T19:44:26.228904" elapsed="7.729256"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Test" id="s1" pass="1" fail="0" skip="0">Test</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
