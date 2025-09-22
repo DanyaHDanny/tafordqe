@@ -1,0 +1,1 @@
+1) tafordqe\tasks\PyTest Introduction> pytest tests --reportportal
